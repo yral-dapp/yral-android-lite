@@ -1,0 +1,65 @@
+{
+  "packageId": "com.yral.lite",
+  "host": "yral.com",
+  "name": "Yral",
+  "launcherName": "Yral",
+  "display": "fullscreen",
+  "themeColor": "#E20479",
+  "themeColorDark": "#000000",
+  "navigationColor": "#000000",
+  "navigationColorDark": "#000000",
+  "navigationDividerColor": "#000000",
+  "navigationDividerColorDark": "#000000",
+  "backgroundColor": "#000000",
+  "enableNotifications": true,
+  "startUrl": "/",
+  "iconUrl": "https://imagedelivery.net/abXI9nS4DYYtyR1yFFtziA/5d47394a-d262-4125-8b73-fd15961eb000/public",
+  "maskableIconUrl": "https://imagedelivery.net/abXI9nS4DYYtyR1yFFtziA/5d47394a-d262-4125-8b73-fd15961eb000/public",
+  "splashScreenFadeOutDuration": 300,
+  "signingKey": {
+    "path": "/workspaces/yral-android-lite/android.keystore",
+    "alias": "android"
+  },
+  "appVersionName": "1",
+  "appVersionCode": 1,
+  "shortcuts": [
+    {
+      "name": "All Videos",
+      "shortName": "Videos",
+      "url": "https://yral.com/feed",
+      "chosenIconUrl": "https://yral.com/img/android-chrome-192x192.png"
+    },
+    {
+      "name": "Hot or Not",
+      "shortName": "Videos",
+      "url": "https://yral.com/hot",
+      "chosenIconUrl": "https://yral.com/img/android-chrome-192x192.png"
+    }
+  ],
+  "generatorApp": "bubblewrap-cli",
+  "webManifestUrl": "https://yral.com/app.webmanifest",
+  "fallbackType": "customtabs",
+  "features": {},
+  "alphaDependencies": {
+    "enabled": false
+  },
+  "enableSiteSettingsShortcut": true,
+  "isChromeOSOnly": false,
+  "isMetaQuest": false,
+  "fullScopeUrl": "https://yral.com/",
+  "minSdkVersion": 19,
+  "shareTarget": {
+    "action": "https://yral.com/menu",
+    "method": "GET",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  },
+  "orientation": "portrait",
+  "fingerprints": [],
+  "additionalTrustedOrigins": [],
+  "retainedBundles": [],
+  "appVersion": "1"
+}
