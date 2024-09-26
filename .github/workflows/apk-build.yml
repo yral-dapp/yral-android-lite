@@ -42,7 +42,9 @@ jobs:
         with:
           api-level: 33
           build-tools-version: 33.0.0
+
       - name: Setup keystore
+        if: ${{ github.event.inputs.release_type == env.PRODUCTION_RELEASE }}
         env: 
           KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_CONTENTS_BASE64 }}
         run: |
