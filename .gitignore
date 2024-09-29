@@ -20,7 +20,6 @@ local.properties
 
 # Gradle
 build/
-gradle/wrapper/gradle-wrapper.jar
 .gradle/
 **/build/
 

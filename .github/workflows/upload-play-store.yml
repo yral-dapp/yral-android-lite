@@ -1,0 +1,59 @@
+name: Upload to Play Store
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+      
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with: 
+          java-version: 17
+          distribution: 'temurin'
+          
+      - name: Cache Gradle packages
+        uses: actions/cache@v2
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Install android SDK
+        uses: android-actions/setup-android@v2
+        with:
+          api-level: 33
+          build-tools-version: 33.0.0
+
+      - name: Setup keystore
+        env: 
+          KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_CONTENTS_BASE64 }}
+        run: |
+          mkdir -p ./android/app
+          echo "$KEYSTORE_BASE64" | base64 -d > ./android/app/my-release-key.keystore
+
+      - name: Build AAB for production
+        run: ./gradlew bundleRelease
+        env:
+          JAVA_HOME: ${{ steps.setup-jdk.outputs.java-home }}
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: 'projects/744934150852/locations/global/workloadIdentityPools/githubactionspool/providers/github-yral'
+          service_account: 'github-android-cd-test@github-cd-test-project.iam.gserviceaccount.com'
+
+      - name: Upload to Play Store
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJson: ${{ steps.auth.outputs.credentials_file_path }}
+          packageName: com.yral.lite
+          releaseFiles: app/build/outputs/bundle/release/app-release.aab
+          track: internal
