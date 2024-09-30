@@ -25,7 +25,7 @@ jobs:
           distribution: 'temurin'
           
       - name: Cache Gradle packages
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
@@ -45,8 +45,13 @@ jobs:
           mkdir -p ./android/app
           echo "$KEYSTORE_BASE64" | base64 -d > ./android/app/my-release-key.keystore
 
+      - name: Setup environment variables
+        run: |
+          echo "KEYSTORE_PASSWORD=${{ secrets.ANDROID_SIGNING_SECRET_PASSWORD }}" >> $GITHUB_ENV
+          echo "KEY_PASSWORD=${{ secrets.ANDROID_SIGNING_SECRET_PASSWORD }}" >> $GITHUB_ENV
+
       - name: Build AAB for production
-        run: ./gradlew bundleRelease
+        run: ./gradlew clean bundleRelease
         env:
           JAVA_HOME: ${{ steps.setup-jdk.outputs.java-home }}
 
