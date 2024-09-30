@@ -55,6 +55,15 @@ jobs:
         env:
           JAVA_HOME: ${{ steps.setup-jdk.outputs.java-home }}
 
+      - name: Verify app bundle exists
+        run: |
+          if [ -f "app/build/outputs/bundle/release/app-release.aab" ]; then
+            echo "App bundle exists."
+          else
+            echo "App bundle does not exist."
+            exit 1
+          fi
+  
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v2
         with:
