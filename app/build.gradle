@@ -149,8 +149,17 @@ android {
         resValue "bool", "enableSiteSettingsShortcut", twaManifest.enableSiteSettingsShortcut
         resValue "string", "orientation", twaManifest.orientation
     }
+    signingConfigs {
+        release {
+            storeFile file('my-release-key.keystore')
+            storePassword System.getenv("ANDROID_SIGNING_SECRET_PASSWORD")
+            keyAlias "android"
+            keyPassword System.getenv("ANDROID_SIGNING_SECRET_PASSWORD")
+        }
+    }
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled true
         }
     }
