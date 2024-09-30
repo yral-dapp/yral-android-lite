@@ -152,9 +152,9 @@ android {
     signingConfigs {
         release {
             storeFile file('my-release-key.keystore')
-            storePassword System.getenv("ANDROID_SIGNING_SECRET_PASSWORD")
+            storePassword System.getenv("KEYSTORE_PASSWORD")
             keyAlias "android"
-            keyPassword System.getenv("ANDROID_SIGNING_SECRET_PASSWORD")
+            keyPassword System.getenv("KEY_PASSWORD")
         }
     }
     buildTypes {
