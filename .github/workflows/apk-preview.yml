@@ -3,7 +3,6 @@ on:
   pull_request:
     types:
       - ready_for_review
-  workflow_dispatch:
 
 jobs:
   build:
@@ -33,13 +32,12 @@ jobs:
           api-level: 33
           build-tools-version: 33.0.0
 
-
       - name: Build APK
         run: ./gradlew assembleDebug
         env:
           JAVA_HOME: ${{ steps.setup-jdk.outputs.java-home }}
 
-      - name: Upload APK (internal-testing)
+      - name: Upload APK (PR-preview)
         uses: actions/upload-artifact@v4
         with:
           name: app-debug
