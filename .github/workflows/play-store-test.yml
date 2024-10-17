@@ -1,4 +1,4 @@
-name: Upload to Play Store
+name: Download AAB
 on:
   push:
     branches:
