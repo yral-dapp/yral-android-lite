@@ -76,7 +76,7 @@ jobs:
           serviceAccountJson: ${{ steps.auth.outputs.credentials_file_path }}
           packageName: com.yral.lite
           releaseFiles: app/build/outputs/bundle/release/app-release.aab
-          track: internal
+          track: qa
           status: draft
 
           
