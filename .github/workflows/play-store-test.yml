@@ -64,16 +64,9 @@ jobs:
             exit 1
           fi
   
-      - name: Authenticate to Google Cloud
-        uses: google-github-actions/auth@v2
+      - name: Upload APK (internal-testing)
+        uses: actions/upload-artifact@v4
         with:
-          workload_identity_provider: 'projects/744934150852/locations/global/workloadIdentityPools/githubactionspool/providers/github-yral'
-          service_account: 'github-android-cd-test@github-cd-test-project.iam.gserviceaccount.com'
-
-      - name: Upload to Play Store
-        uses: r0adkll/upload-google-play@v1.1.3
-        with:
-          serviceAccountJson: ${{ steps.auth.outputs.credentials_file_path }}
-          packageName: com.yral.lite
-          releaseFiles: app/build/outputs/bundle/release/app-release.aab
-          track: internal
+          name: app-debug
+          path: app/build/outputs/bundle/release/app-release.aab
+  
