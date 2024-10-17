@@ -65,6 +65,7 @@ jobs:
           fi
   
       - name: Authenticate to Google Cloud
+        id: Auth
         uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: 'projects/744934150852/locations/global/workloadIdentityPools/githubactionspool/providers/yral-android-lite'
@@ -73,7 +74,7 @@ jobs:
       - name: Upload to Play Store
         uses: r0adkll/upload-google-play@v1.1.3
         with:
-          serviceAccountJson: ${{ secrets.GOOGLE_APPLICATION_CREDENTIALS }}
+          serviceAccountJson: ${{ steps.auth.outputs.credentials_file_path }}
           packageName: com.yral.lite
           releaseFiles: app/build/outputs/bundle/release/app-release.aab
           track: qa
