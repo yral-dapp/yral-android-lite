@@ -1,0 +1,72 @@
+name: Download AAB
+on:
+  push:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+permissions:
+  id-token: write 
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+      
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with: 
+          java-version: 17
+          distribution: 'temurin'
+          
+      - name: Cache Gradle packages
+        uses: actions/cache@v3
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      - name: Install android SDK
+        uses: android-actions/setup-android@v2
+        with:
+          api-level: 33
+          build-tools-version: 33.0.0
+
+      - name: Setup keystore
+        env: 
+          KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_CONTENTS_BASE_64 }}
+        run: |
+          mkdir -p ./android/app
+          echo "$KEYSTORE_BASE64" | base64 -d > ./app/my-release-key.keystore
+
+      - name: Setup environment variables
+        run: |
+          echo "KEYSTORE_PASSWORD=${{ secrets.ANDROID_SIGNING_SECRET_PASSWORD }}" >> $GITHUB_ENV
+          echo "KEY_PASSWORD=${{ secrets.ANDROID_SIGNING_SECRET_PASSWORD }}" >> $GITHUB_ENV
+
+      - name: Build AAB for production
+        run: ./gradlew clean bundleRelease
+        env:
+          JAVA_HOME: ${{ steps.setup-jdk.outputs.java-home }}
+
+      - name: Verify app bundle exists
+        run: |
+          if [ -f "app/build/outputs/bundle/release/app-release.aab" ]; then
+            echo "App bundle exists."
+          else
+            echo "App bundle does not exist."
+            exit 1
+          fi
+  
+      - name: Upload APK (internal-testing)
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-debug
+          path: app/build/outputs/bundle/release/app-release.aab
+  
