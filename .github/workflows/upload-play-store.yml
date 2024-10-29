@@ -57,8 +57,8 @@ jobs:
         id: Auth
         uses: google-github-actions/auth@v2
         with:
-          workload_identity_provider: 'projects/744934150852/locations/global/workloadIdentityPools/githubactionspool/providers/yral-android-lite'
-          service_account: 'github-android-cd-test@github-cd-test-project.iam.gserviceaccount.com'
+          workload_identity_provider: 'projects/804814798298/locations/global/workloadIdentityPools/github/providers/yral-android-lite'
+          service_account: 'publisher-action-play-store@internet-computer-web2-oauth.iam.gserviceaccount.com'
 
       - name: Upload to Play Store
         uses: r0adkll/upload-google-play@v1.1.3
